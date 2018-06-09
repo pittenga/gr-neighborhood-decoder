@@ -39,17 +39,15 @@ def readNeighborhoods():
                 newHood.points.append(newPoint)
                 if newPoint.latitude > newHood.maxPoint.latitude:
                     newHood.maxPoint.latitude = newPoint.latitude
-                    #print "New max point: (%.6f, %.6f)" % (newHood.maxPoint.latitude, newHood.maxPoint.longitude)
+
                 if newPoint.longitude > newHood.maxPoint.longitude:
                     newHood.maxPoint.longitude = newPoint.longitude
-                    #print "New max point: (%.6f, %.6f)" % (newHood.maxPoint.latitude, newHood.maxPoint.longitude)
 
                 if newPoint.latitude < newHood.minPoint.latitude:
                     newHood.minPoint.latitude = newPoint.latitude
-                    #print "New min point: (%.6f, %.6f)" % (newHood.minPoint.latitude, newHood.minPoint.longitude)
+
                 if newPoint.longitude < newHood.minPoint.longitude:
                     newHood.minPoint.longitude = newPoint.longitude
-                    #print "New min point: (%.6f, %.6f)" % (newHood.minPoint.latitude, newHood.minPoint.longitude)
 
             elif line.strip() == "":
                 continue
@@ -60,10 +58,9 @@ def readNeighborhoods():
                     print "Just the start - creating a new hood!"
 
                 newHood = Neighborhood()
-                newHood.name = line.strip(' \n').rstrip(':')
-                #print newHood.name
-                #print str(newHood.maxPoint.latitude)
+                newHood.name = line.strip(' \r\n:')
 
+    hoodList.append(newHood)
     return hoodList
 
 def readTestPoints():
@@ -76,14 +73,29 @@ def readTestPoints():
 
     return testPoints
 
+def findQuadrantsCovered(hood, testPoint):
+    quadrants = [False, False, False, False]
+    for point in hood.points:
+        if point.latitude > testPoint.latitude and point.longitude > testPoint.longitude:
+            quadrants[0] = True
+        elif point.latitude > testPoint.latitude and point.longitude < testPoint.longitude:
+            quadrants[1] = True
+        elif point.latitude < testPoint.latitude and point.longitude < testPoint.longitude:
+            quadrants[2] = True
+        elif point.latitude < testPoint.latitude and point.longitude > testPoint.longitude:
+            quadrants[3] = True
+
+    return (quadrants[0] and quadrants[1] and quadrants[2] and quadrants[3])
+
 hoodList = readNeighborhoods()
 testList = readTestPoints()
 for point in testList:
     pointFound = False
     for hood in hoodList:
-        #print "Is %s (%.6f, %.6f) inside of %s (%.6f, %.6f) and (%.6f, %.6f)" % (point.name, point.latitude, point.longitude, hood.name, hood.minPoint.latitude, hood.minPoint.longitude, hood.maxPoint.latitude, hood.maxPoint.longitude)
         if point.latitude > hood.minPoint.latitude and point.latitude < hood.maxPoint.latitude and point.longitude > hood.minPoint.longitude and point.longitude < hood.maxPoint.longitude:
-            print point.name + ": " + hood.name
-            pointFound = True
+            #print "-" + point.name + ": " + hood.name
+            if(findQuadrantsCovered(hood, point)):
+                pointFound = True
+                print " ---->" + point.name + ": " + hood.name
     if not pointFound:
         print point.name + ": <none>"

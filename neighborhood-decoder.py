@@ -1,32 +1,16 @@
 import os
-
-class Coordinate:
-    name = ""
-    latitude = 0
-    longitude = 0
-
-    def __init__(self, name, lat, lon):
-        self.latitude = lat
-        self.longitude = lon
-        self.name = name
-
-    def __str__(self):
-        return "(%.18f, %.18f)" % (self.latitude, self.longitude)
+from shapely.geometry import *
 
 class Neighborhood:
     name = ""
     points = []
-    maxPoint = Coordinate("", -90, -180)
-    minPoint = Coordinate("", 90, 180)
 
     def __init__(self):
         self.name = ""
         self.points = []
-        self.maxPoint = Coordinate("", -90, -180)
-        self.minPoint = Coordinate("", 90, 180)
 
     def __str__(self):
-        return self.name + ": " + str(self.maxPoint) + " " + str(self.minPoint)
+        return self.name
 
 
 def readNeighborhoods():
@@ -35,19 +19,8 @@ def readNeighborhoods():
         for line in f:
             if line.strip().startswith("-"):
                 lat, lon = line.strip(' \n').split(',')
-                newPoint = Coordinate("", float(lat), float(lon))
+                newPoint = Point(float(lat), float(lon))
                 newHood.points.append(newPoint)
-                if newPoint.latitude > newHood.maxPoint.latitude:
-                    newHood.maxPoint.latitude = newPoint.latitude
-
-                if newPoint.longitude > newHood.maxPoint.longitude:
-                    newHood.maxPoint.longitude = newPoint.longitude
-
-                if newPoint.latitude < newHood.minPoint.latitude:
-                    newHood.minPoint.latitude = newPoint.latitude
-
-                if newPoint.longitude < newHood.minPoint.longitude:
-                    newHood.minPoint.longitude = newPoint.longitude
 
             elif line.strip() == "":
                 continue
@@ -69,33 +42,18 @@ def readTestPoints():
         for line in f:
             name, datapoint = line.split(':')
             lat, lon = datapoint.split(',')
-            testPoints.append(Coordinate(name, float(lat), float(lon)))
+            testPoints.append(Point(float(lat), float(lon)))
 
     return testPoints
 
-def findQuadrantsCovered(hood, testPoint):
-    quadrants = [False, False, False, False]
-    for point in hood.points:
-        if point.latitude > testPoint.latitude and point.longitude > testPoint.longitude:
-            quadrants[0] = True
-        elif point.latitude > testPoint.latitude and point.longitude < testPoint.longitude:
-            quadrants[1] = True
-        elif point.latitude < testPoint.latitude and point.longitude < testPoint.longitude:
-            quadrants[2] = True
-        elif point.latitude < testPoint.latitude and point.longitude > testPoint.longitude:
-            quadrants[3] = True
-
-    return (quadrants[0] and quadrants[1] and quadrants[2] and quadrants[3])
-
 hoodList = readNeighborhoods()
 testList = readTestPoints()
-for point in testList:
+
+for index, point in enumerate(testList):
     pointFound = False
     for hood in hoodList:
-        if point.latitude > hood.minPoint.latitude and point.latitude < hood.maxPoint.latitude and point.longitude > hood.minPoint.longitude and point.longitude < hood.maxPoint.longitude:
-            #print "-" + point.name + ": " + hood.name
-            if(findQuadrantsCovered(hood, point)):
-                pointFound = True
-                print " ---->" + point.name + ": " + hood.name
+        if point.within(Polygon([[p.x, p.y] for p in hood.points])):
+            print "Point " + str(index+1) + ": " + hood.name
+            pointFound = True
     if not pointFound:
-        print point.name + ": <none>"
+        print "Point " + str(index+1) + ": <none>"

@@ -27,8 +27,23 @@ Requirements:
 
 # Obstacles
 1. Racket is an unknown language
+  * Mitigate by utilizing other languages and running from Racket and using template code.
 2. Identifying if a point is inside of an abstract polygon will be difficult.
+  * Mitigate by using pre-tested libraries and code examples.
 
 # Assumptions
-1. WGS84 approximation of the earth
+1. ~~WGS84 approximation of the earth~~ Actually - just using a flat-earth model should be good enough.
 2. Lat/Lon will always be provided in decimal degrees (85.1234567) as opposed to Degrees/Minutes/seconds notation (85 12' 36" W)
+
+# Solution
+## Solution 1
+Using the shapely library and building this in python allows for us to quickly formulate to a correct answer. Wrapping it in a racket application basically allows us to complete the "must be racket" part of the assignment :)
+
+### Build and Run Instructions
+Be sure to have installed [Racket](http://racket-lang.org/download/) (tested with 6.12), [python](https://www.python.org/downloads/release/python-2710/) (tested with 2.7.10), [pip](https://pip.pypa.io/en/stable/installing/) (tested with 10.0.1), and the [shapely python library](https://pypi.org/project/Shapely/) (tested with 1.6.4.post1)
+
+Run with racket on the command line by running
+```
+racket racket_wrapper.rkt
+```
+Or using the DrRacket GUI by opening the file racket_wrapper.rkt and selecting "Run"

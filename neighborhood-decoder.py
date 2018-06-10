@@ -28,7 +28,7 @@ def readNeighborhoods():
                 try:
                     hoodList.append(newHood)
                 except NameError:
-                    print "Just the start - creating a new hood!"
+                    print "Just the start - creating a new 'hood!"
 
                 newHood = Neighborhood()
                 newHood.name = line.strip(' \r\n:')

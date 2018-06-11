@@ -45,7 +45,7 @@ Note: Someone has obviously done this before: https://stackoverflow.com/question
 2. Identifying if a point is inside of an abstract polygon will be difficult.
   * Mitigate by using pre-tested libraries and code examples.
     * Appears to be 2 camps to figuring this out:
-      * The "hard" way (and probably most correct) - using the [DE-9IM model](https://en.wikipedia.org/wiki/DE-9IM) which uses matrix multiplication, dot products and corss products
+      * The "hard" way (and probably most correct) - using the [DE-9IM model](https://en.wikipedia.org/wiki/DE-9IM) which uses matrix multiplication, dot products and cross products
       * The "easy" way (and easiest to understand) - using the [Ray Polygon Intersection method](https://pdfs.semanticscholar.org/presentation/d30b/29b1c9306540a2891d2830ee65d55d3fb836.pdf) which uses some assumptions and simple math to identify inside vs outside.
 
 # Assumptions
@@ -60,7 +60,7 @@ Using the shapely library and building this in python allows for us to quickly f
 Be sure to have installed:
 * [Racket](http://racket-lang.org/download/) (tested with 6.12)
 * [python](https://www.python.org/downloads/release/python-2710/) (tested with 2.7.10)
-* [pip](https://pip.pypa.io/en/stable/installing/) (tested with 10.0.1)
+* [pip](https://pip.pypa.io/en/stable/installing/) (tested with 10.0.1) (to install shapely)
 * [shapely python library](https://pypi.org/project/Shapely/) (tested with 1.6.4.post1)
 
 Run with racket on the command line by running
@@ -69,14 +69,18 @@ racket racket_wrapper.rkt
 ```
 Or using the DrRacket GUI by opening the file racket_wrapper.rkt and selecting "Run"
 
+You can also just run it using python with
+```
+python neighborhood-decoder.py
+```
 time: about 1.5s (with racket wrapper), 1.2s (standalone python)
 
 ## Solution 2 - develop branch
-There are multiple ways to do this in Racket. After struggling with Racket in general for a *long* time (my first functional language), I stumbled upon a project to bring the python language to Racket called [PyonR](https://github.com/pedropramos/PyonR). I also spent some time trying to get this to work. I thought since I already wrote Solution 1 in python, I could just pull it in. I struggled for a while to get the type definitions to match between python and Racket (mostly has problems with "lists") so I decided to bite the bullet and just learn Racket.
+There are multiple ways to do this in Racket. After struggling with Racket in general for a *long* time, I stumbled upon a project to bring the python language to Racket called [PyonR](https://github.com/pedropramos/PyonR). I also spent some time trying to get this to work. I thought since I already wrote Solution 1 in python, I could just pull it in. I struggled for a while to get the type definitions to match between python and Racket (mostly has problems with "lists") so I decided to bite the bullet and just learn Racket.
 
 The first thing I tired to do was find a library that did the geometric math. There are a couple out there, but ultimately, the one that looked the most promising was a racket library written by [Vincent Toups](https://github.com/VincentToups/racket-lib). I pulled the files I needed from it they are included in [geometry-library](geometry-library). There are no instructions on pulling in the entire library (and I couldn't figure out how to do it...and I didn't need it) so I just used what I needed.
 
-After struggling with the language some more, I finally started to get it (and understand the API documentation). I finally got to the point where I can read in the files, save them off to proper object and pass those objects to the geometry library. Unfortunately, the geometry library I selected doesn't appear to be tested properly (or my polygons weren't ). Quickly running out of time, I couldn't figure out what changes needed to be made to come up with the correct answers but, I'm positive, given another day or 2, I could make it work properly.
+After struggling with the language some more, I finally started to get it (and understand the API documentation). I finally got to the point where I can read in the files, save them off to proper object and pass those objects to the geometry library. Unfortunately, the geometry library I selected doesn't appear to be tested properly (or I'm not using it properly). Quickly running out of time, I couldn't figure out what changes needed to be made to come up with the correct answers but, I'm positive, given another day or 2, I could make it work properly.
 
 I haven't merged this into master because....well....it isn't done yet.
 

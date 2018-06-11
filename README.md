@@ -52,7 +52,7 @@ Note: Someone has obviously done this before: https://stackoverflow.com/question
 1. ~~WGS84 approximation of the earth~~ Actually - just using a flat-earth model should be good enough. Math is way easier
 2. Lat/Lon will always be provided in decimal degrees (85.1234567) as opposed to Degrees/Minutes/seconds notation (85 12' 36" W)
 
-# Solution
+# Solution(s)
 ## Solution 1 - master branch
 Using the shapely library and building this in python allows for us to quickly formulate to a correct answer. Wrapping it in a racket application basically allows us to complete the "must be racket" part of the assignment :) Shapely is using the DE-9IM model references above.
 
@@ -76,7 +76,7 @@ There are multiple ways to do this in Racket. After struggling with Racket in ge
 
 The first thing I tired to do was find a library that did the geometric math. There are a couple out there, but ultimately, the one that looked the most promising was a racket library written by [Vincent Toups](https://github.com/VincentToups/racket-lib). I pulled the files I needed from it they are included in [geometry-library](geometry-library). There are no instructions on pulling in the entire library (and I couldn't figure out how to do it...and I didn't need it) so I just used what I needed.
 
-After struggling with the language some more, I finally started to get it (and understand the API documentation). I finally got to the point where I can read in the files, save them off to proper object and pass those objects to the geometry library. Unfortunately, the geometry library I selected doesn't appear to be tested properly. Quickly running out of time, I couldn't figure out what changes needed to be made to come up with the correct answers, but, I'm positive, given another day or 2, I could make it work properly.
+After struggling with the language some more, I finally started to get it (and understand the API documentation). I finally got to the point where I can read in the files, save them off to proper object and pass those objects to the geometry library. Unfortunately, the geometry library I selected doesn't appear to be tested properly (or my polygons weren't ). Quickly running out of time, I couldn't figure out what changes needed to be made to come up with the correct answers but, I'm positive, given another day or 2, I could make it work properly.
 
 I haven't merged this into master because....well....it isn't done yet.
 
@@ -95,3 +95,12 @@ racket neighborhood-decoder.rkt
 You should see the output in the proper format but incorrect solutions.
 
 time: about 1.4s
+
+# More Time
+Given more time I would have implemented the following:
+1. Fixed the geometry library to work for our situation
+2. Additional optimizations now knowing the language better
+3. Impressing upon the customer the downfalls to selecting a language like Racket :)
+4. Far down the road: Additional test points in other parts of the world (positive and negative latitudes and longitudes, interesting places around the poles and equator, interesting shapes of neighborhoods, etc)
+5. Far down the road: Accept neighborhood and test points via command line to make it easier to test.
+6. Really far down the road: Tools for ensuring that input files are formatted appropriately, or potentially tools linked to resources like Google Earth to visually display input and output files. Maybe even rewrite input files in KML format to make visualization easier.

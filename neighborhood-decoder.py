@@ -33,6 +33,8 @@ def readNeighborhoods():
                 newHood = Neighborhood()
                 newHood.name = line.strip(' \r\n:')
 
+    #We exit the loop before appending the last neighborhood,
+    #so add it here. All the info is already filled out
     hoodList.append(newHood)
     return hoodList
 

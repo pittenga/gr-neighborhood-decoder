@@ -1,13 +1,25 @@
 # Project Definition
 You are working on a project for the City of Grand Rapids. They have provided you with latitude and longitude coordinate information defining the shapes of the city's neighborhoods. They want an application that, given the latitude and longitude of an address, tells them what neighborhood the address is part of.
 
-A snapshot of a map of the neighborhoods is included to help you consider the constraints and shapes you'll be dealing with (see attached neighborhood_map.png).
+A snapshot of a map of the neighborhoods is included to help you consider the constraints and shapes you'll be dealing with.
 
 Your application should:
 
-* Read in the neighborhood shape data from a file (see attached gr_neighborhoods.txt)
-* Read in the points to classify from a file (example below)
-* Print out the neighborhood for each point (example below)
+* Read in the neighborhood shape data from a file ([gr_neighborhoods.txt](gr_neighborhoods.txt))
+* Read in the points to classify from a file ([test-points.txt](test-points.txt)])
+* Print out the neighborhood for each point
+  * Point 1: ken-O-Sha Park
+  * Point 2: Alger Heights
+  * Point 3: Southeast Community
+  * Point 4: <none>
+  * Point 5: John Ball Park
+  * Point 6: Oldtown-Heartside
+  * Point 7: Bellknap Lookout
+  * Point 8: Heritage Hill
+  * Point 9: <none>
+  * Point 10: Creston
+  * Point 11: North End
+  * Point 12: Creston
 * Keep performance and correct results in mind
 
 Requirements:
@@ -57,6 +69,8 @@ racket racket_wrapper.rkt
 ```
 Or using the DrRacket GUI by opening the file racket_wrapper.rkt and selecting "Run"
 
+time: about 1.5s (with racket wrapper), 1.2s (standalone python)
+
 ## Solution 2 - develop branch
 There are multiple ways to do this in Racket. After struggling with Racket in general for a *long* time (my first functional language), I stumbled upon a project to bring the python language to Racket called [PyonR](https://github.com/pedropramos/PyonR). I also spent some time trying to get this to work. I thought since I already wrote Solution 1 in python, I could just pull it in. I struggled for a while to get the type definitions to match between python and Racket (mostly has problems with "lists") so I decided to bite the bullet and just learn Racket.
 
@@ -64,7 +78,11 @@ The first thing I tired to do was find a library that did the geometric math. Th
 
 After struggling with the language some more, I finally started to get it (and understand the API documentation). I finally got to the point where I can read in the files, save them off to proper object and pass those objects to the geometry library. Unfortunately, the geometry library I selected doesn't appear to be tested properly. Quickly running out of time, I couldn't figure out what changes needed to be made to come up with the correct answers, but, I'm positive, given another day or 2, I could make it work properly.
 
+I haven't merged this into master because....well....it isn't done yet.
+
 ### Build and Run Instructions
+Be sure to have installed:
+* [Racket](http://racket-lang.org/download/) (tested with 6.12)
 
 In the directory where the geometry-library exists, link in the geometry-library using:
 ```
@@ -75,3 +93,5 @@ Run the application using
 racket neighborhood-decoder.rkt
 ```
 You should see the output in the proper format but incorrect solutions.
+
+time: about 1.4s

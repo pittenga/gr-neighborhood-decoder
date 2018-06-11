@@ -69,7 +69,7 @@
             void )
       )
     )
-    (if (not found) (printf "<none>\n") void)
+    (if (not found) (printf "~a: <none>\n" (struct-testdata-name i)) void)
     (set! found #f)
   )
 )
